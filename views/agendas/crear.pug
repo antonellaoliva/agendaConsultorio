@@ -1,0 +1,25 @@
+extends ../layout.pug
+
+block content
+  h1 Crear Nueva Agenda
+  form(action="/api/agendas" method="POST")
+    div
+      label(for="profesional_especialidad_id") Profesional Especialidad ID:
+      input(type="number" name="profesional_especialidad_id" required)
+    div
+      label(for="sucursal_id") Sucursal ID:
+      input(type="number" name="sucursal_id" required)
+    div
+      label(for="estado") Estado:
+      input(type="text" name="estado" required)
+    div
+      label(for="clasificacion") Clasificación:
+      input(type="text" name="clasificacion" required)
+    div
+      label(for="max_sobreturnos") Max Sobreturnos:
+      input(type="number" name="max_sobreturnos")
+    div
+      label(for="duracion_turno") Duración Turno:
+      input(type="number" name="duracion_turno")
+    div
+      button(type="submit") Crear Agenda

@@ -1,0 +1,82 @@
+extends ../layout.pug
+
+block content
+  h1 Filtrar Agendas
+
+  form(action="/agendas/filtrar", method="GET")
+    //- // Selección de especialidad
+    select(name="especialidad")
+      option(value="") Selecciona Especialidad
+      each especialidad in especialidades
+        option(value=especialidad.id) #{especialidad.nombre}
+
+    //- // Selección de profesional
+    select(name="profesional")
+      option(value="") Selecciona Profesional
+      each profesional in profesionales
+        option(value=profesional.id) #{profesional.nombre} #{profesional.apellido}
+
+    button(type="submit") Filtrar
+
+  //- // Mostrar resultados de la agenda si están disponibles
+  if agendas && agendas.length
+    table
+      thead
+        tr
+          th Profesional
+          th Especialidad
+          th Clasificación
+          th Estado
+          th Max Sobreturnos
+          th Duración de Turno
+          th Fecha
+      tbody
+        each agenda in agendas
+          tr
+            td #{agenda.profesional_nombre} #{agenda.profesional_apellido}
+            td #{agenda.especialidad_nombre}
+            td #{agenda.clasificacion}
+            td #{agenda.estado}
+            td #{agenda.max_sobreturnos}
+            td #{agenda.duracion_turno}
+            td #{agenda.fecha}
+  else
+    p No se encontraron agendas.
+
+
+//- extends ../layout.pug
+
+//- block content
+//-   h1 Filtrar Agendas
+
+//-   form(action="/agendas/filtrar", method="GET")
+//-     // Selección de especialidad
+//-     select(name="especialidad")
+//-       option(value="") Selecciona Especialidad
+//-       each especialidad in especialidades
+//-         option(value=especialidad.id) #{especialidad.nombre}
+
+//-     // Selección de profesional
+//-     select(name="profesional")
+//-       option(value="") Selecciona Profesional
+//-       each profesional in profesionales
+//-         option(value=profesional.id) #{profesional.nombre} #{profesional.apellido}
+
+//-     button(type="submit") Filtrar
+
+//-   // Mostrar resultados de la agenda si están disponibles
+//-   if agendas && agendas.length
+//-     table
+//-       thead
+//-         tr
+//-           th Profesional
+//-           th Especialidad
+//-           th Clasificación
+//-       tbody
+//-         each agenda in agendas
+//-           tr
+//-             td #{agenda.profesional_nombre} #{agenda.profesional_apellido}
+//-             td #{agenda.especialidad_nombre}
+//-             td #{agenda.clasificacion}
+//-   else
+//-     p No se encontraron agendas.

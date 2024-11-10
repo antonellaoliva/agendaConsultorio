@@ -1,0 +1,56 @@
+extends ../layout.pug
+
+block content
+  .container.mt-5
+    h1.text-center.mb-4 Datos del Paciente
+    
+    // Tarjeta para los datos del paciente
+    .card
+      .card-body
+        form(action="/seleccionar-turno" method="POST")
+          dl.row
+            dt.col-sm-3 Documento:
+            dd.col-sm-9 #{paciente.dni}
+            input(type="hidden" name="dni" value=paciente.dni)
+          
+            dt.col-sm-3 Nombre:
+            dd.col-sm-9 #{paciente.nombre}
+          
+            dt.col-sm-3 Apellido:
+            dd.col-sm-9 #{paciente.apellido}
+          
+            dt.col-sm-3 Obra Social:
+            dd.col-sm-9 #{paciente.obra_social}
+          
+            dt.col-sm-3 Datos de contacto:
+            dd.col-sm-9 #{paciente.datos_contacto}
+          
+          // Botón de Continuar
+          a.btn.btn-primary.mt-4(href='/turnos/seleccion-especialidad') Continuar 
+
+  script.
+    const pacienteId = #{paciente.id};
+    localStorage.setItem('pacienteId', pacienteId);
+
+
+
+//- extends ../layout.pug
+
+//- block content
+//-   h1 Datos del Paciente
+//-   form(action="/seleccionar-turno" method="POST")
+//-     label Documento: #{paciente.dni}
+//-     input(type="hidden" name="dni" value=paciente.dni)
+    
+//-     label Nombre: #{paciente.nombre}
+//-     label Apellido: #{paciente.apellido}
+//-     label Obra Social: #{paciente.obra_social}
+//-     label Datos de contacto: #{paciente.datos_contacto}
+    
+//-     //- button(type="submit") Continuar
+//-     a(href='/turnos/seleccion-especialidad') Continuar 
+
+  
+//-   script.
+//-     const pacienteId = #{paciente.id};
+//-     localStorage.setItem('pacienteId', pacienteId);

@@ -1,0 +1,52 @@
+extends ../layout.pug
+
+block content
+  h1 Editar Médico
+  form(action=`/profesionales/${profesional.id}`, method="post")
+    .mb-3
+      label.form-label Nombre:
+      input.form-control(type="text", name="nombre", value=profesional.nombre)
+      
+    .mb-3
+      label.form-label Apellido:
+      input.form-control(type="text", name="apellido", value=profesional.apellido)
+      
+    .mb-3
+      label.form-label Estado:
+      select.form-select(name="estado")
+        option(value="activo" selected=profesional.estado === 'activo') Activo
+        option(value="inactivo" selected=profesional.estado === 'inactivo') Inactivo
+      
+    .mb-3
+      label.form-label Especialidad:
+      select.form-select(name="especialidades" multiple)
+        each especialidad in especialidades
+          option(value=especialidad.id selected=profesional.especialidades && profesional.especialidades.includes(especialidad.id))= especialidad.nombre
+      
+    button.btn.btn-primary(type="submit") Guardar Cambios
+
+
+//- extends ../layout.pug
+
+//- block content
+//-   h1 Editar Médico
+//-     form(action=`/profesionales/${profesional.id}`, method="post")
+//-       label Nombre:
+//-       input(type="text", name="nombre", value=profesional.nombre)
+//-       br
+//-       label Apellido:
+//-       input(type="text", name="apellido", value=profesional.apellido)
+//-       br
+//-       label Estado:
+//-       select(name="estado")
+//-         option(value="activo" selected=profesional.estado === 'activo') Activo
+//-         option(value="inactivo" selected=profesional.estado === 'inactivo') Inactivo
+//-       br
+//-       label Especialidades:
+//-       select(name="especialidades" multiple)
+//-         each especialidad in especialidades
+//-           option(value=especialidad.id selected=profesional.especialidades && profesional.especialidades.includes(especialidad.id))= especialidad.nombre
+//-       br
+//-       button(type="submit") Guardar Cambios
+
+  

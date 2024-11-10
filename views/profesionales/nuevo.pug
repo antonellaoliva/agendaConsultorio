@@ -1,0 +1,45 @@
+extends ../layout.pug
+
+block content
+  h1 Registrar Nuevo Médico
+  form(action="/profesionales", method="post")
+    .mb-3
+      label.form-label Nombre:
+      input.form-control(type="text", name="nombre", required)
+    .mb-3
+      label.form-label Apellido:
+      input.form-control(type="text", name="apellido", required)
+    
+    .mb-3
+      label.form-label Especialidades:
+      select.form-select(name="especialidades" multiple)
+        each especialidad in especialidades
+          option(value=especialidad.id)= especialidad.nombre
+    
+    .mb-3
+      label.form-label Matrícula para cada especialidad seleccionada:
+      each especialidad in especialidades
+        .input-group.mb-2
+          span.input-group-text= especialidad.nombre
+          input.form-control(type="text", name="matriculas[" + especialidad.id + "]", placeholder="Número de matrícula para " + especialidad.nombre)
+    
+    button.btn.btn-primary(type="submit") Registrar Médico
+
+
+//- extends ../layout.pug
+
+//- block content
+//-   h1 Registrar Nuevo Médico
+//-   form(action="/profesionales", method="post")
+//-       label Nombre:
+//-       input(type="text", name="nombre", required)
+//-       br
+//-       label Apellido:
+//-       input(type="text", name="apellido", required)
+//-       br
+//-       label Especialidades:
+//-       select(name="especialidades" multiple)
+//-         each especialidad in especialidades
+//-           option(value=especialidad.id)= especialidad.nombre
+//-       br
+//-       button(type="submit") Registrar Médico

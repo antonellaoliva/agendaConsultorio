@@ -1,0 +1,57 @@
+extends ../layout.pug
+
+block content
+  h1 Lista de Agendas
+  table(border="1")
+    thead
+      tr
+        th ID
+        th Profesional Especialidad ID
+        th Sucursal ID
+        th Estado
+        th Clasificación
+        th Max Sobreturnos
+        th Duración Turno
+    tbody
+      each agenda in agendas
+        tr
+          td= agenda.id
+          td= agenda.profesional_especialidad_id || '-'
+          td= agenda.sucursal_id || '-'
+          td= agenda.estado || '-'
+          td= agenda.clasificacion || '-'
+          td= agenda.max_sobreturnos
+          td= agenda.duracion_turno || '-'
+
+            //-   form(action=`/api/agendas/${agenda.id}/desactivar` method="POST" onsubmit="return confirm('¿Estás seguro de eliminar esta agenda?');")
+                
+            //-     button(type="submit") Desactivar agenda
+
+
+
+
+
+    //- h1 Lista de Agendas
+    //- if agendas.length > 0
+    //-   table
+    //-     thead
+    //-       tr
+    //-         th ID
+    //-         th Profesional Especialidad ID
+    //-         th Sucursal ID
+    //-         th Estado
+    //-         th Clasificación
+    //-         th Max Sobreturnos
+    //-         th Duración Turno
+    //-     tbody
+    //-       each agenda in agendas
+    //-         tr
+    //-           td= agenda.id
+    //-           td= agenda.professional_especialidad_id 
+    //-           td= agenda.sucursal_id
+    //-           td= agenda.estado
+    //-           td= agenda.clasificacion
+    //-           td= agenda.max_sobreturnos
+    //-           td= agenda.duracion_turno
+    //- else
+    //-   p No hay agendas disponibles.

@@ -1,0 +1,8 @@
+extends ../layout.pug 
+
+block content
+  h1 Agendar turno
+  form(action="/pedir-turno" method="POST")
+    label(for="dni") Ingrese su DNI:
+    input(type="text" name="dni" id="dni" required)
+    button(type="submit") Buscar

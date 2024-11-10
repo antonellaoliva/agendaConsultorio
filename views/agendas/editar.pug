@@ -1,0 +1,32 @@
+extends ../layout.pug
+
+block content
+    h1 Editar Agenda
+
+    form(action=`/api/agendas/${agenda.id}` method="POST")
+        div
+            label(for="profesional_especialidad_id") Profesional Especialidad ID
+            input(type="number" name="profesional_especialidad_id" required value=agenda.profesional_especialidad_id)
+
+        div
+            label(for="sucursal_id") Sucursal ID
+            input(type="number" name="sucursal_id" value=agenda.sucursal_id)
+
+        div
+            label(for="estado") Estado
+            input(type="text" name="estado" value=agenda.estado)
+
+        div
+            label(for="clasificacion") Clasificación
+            input(type="text" name="clasificacion" value=agenda.clasificacion)
+
+        div
+            label(for="max_sobreturnos") Max Sobreturnos
+            input(type="number" name="max_sobreturnos" value=agenda.max_sobreturnos)
+
+        div
+            label(for="duracion_turno") Duración Turno
+            input(type="number" name="duracion_turno" value=agenda.duracion_turno)
+
+        div
+            button(type="submit") Guardar Cambios

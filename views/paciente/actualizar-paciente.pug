@@ -1,0 +1,20 @@
+extends ../layout.pug
+
+block content
+  h1 Datos del Paciente
+
+  form(action='/actualizar-paciente' method='POST' enctype='multipart/form-data')
+    input(type='hidden' name='id' value=paciente.id)
+    label Nombre:
+    input(type='text' name='nombre' value=paciente.nombre)
+    label Apellido:
+    input(type='text' name='apellido' value=paciente.apellido)
+    label DNI:
+    input(type='text' name='dni' value=paciente.dni readonly)
+    label Obra Social:
+    input(type='text' name='obra_social' value=paciente.obra_social)
+    label Datos de Contacto:
+    input(type='text' name='datos_contacto' value=paciente.datos_contacto)
+    label Documento (opcional):
+    input(type='file' name='documento')
+    button(type='submit') Actualizar

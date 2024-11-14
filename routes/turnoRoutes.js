@@ -14,4 +14,5 @@ router.get('/turnos/disponibles/:profesionalId', TurnoController.getTurnosDispon
 
 router.post('/confirmar/:turnoId', TurnoController.confirmarTurno);
 
+
 module.exports = router;

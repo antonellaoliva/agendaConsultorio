@@ -90,6 +90,10 @@ const Turno = {
     return turnos;
   },
 
-  };
+  
+};
+
+
+  
 
 module.exports = Turno;

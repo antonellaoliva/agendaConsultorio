@@ -2,9 +2,7 @@ const express = require('express');
 const router = express.Router();
 const profesionalController = require('../controllers/profesionalController');
 
-// Ruta para obtener profesionales
 router.get('/profesionales/:especialidadId/:sucursalId', profesionalController.getProfesionales);
-
 router.get('/', profesionalController.listarMedicos);
 router.get('/nuevo', profesionalController.formularioNuevoMedico);
 router.post('/', profesionalController.crearMedico);

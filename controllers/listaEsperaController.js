@@ -1,4 +1,4 @@
-const ListaEspera = require('../models/listaEspera');
+const ListaEspera = require('../models/ListaEspera');
 
 const ListaEsperaController = {
   async mostrar(req, res) {

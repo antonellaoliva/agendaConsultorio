@@ -1,32 +1,30 @@
 extends ../layout.pug
 
 block content
-    h1 Editar Agenda
+  h1.text-center Editar Agenda
+  .container.d-flex.justify-content-center.align-items-center(style="min-height: 100vh;")
+    form(action=`/agendas/${agenda.id}` method="POST" class="w-50")
+      div.mb-3
+        label(for="profesional_especialidad_id", class="form-label") Profesional Especialidad ID
+        input(type="number" name="profesional_especialidad_id" required value=agenda.profesional_especialidad_id class="form-control")
 
-    form(action=`/api/agendas/${agenda.id}` method="POST")
-        div
-            label(for="profesional_especialidad_id") Profesional Especialidad ID
-            input(type="number" name="profesional_especialidad_id" required value=agenda.profesional_especialidad_id)
+      div.mb-3
+        label(for="sucursal_id", class="form-label") Sucursal ID
+        input(type="number" name="sucursal_id" value=agenda.sucursal_id class="form-control")
 
-        div
-            label(for="sucursal_id") Sucursal ID
-            input(type="number" name="sucursal_id" value=agenda.sucursal_id)
+      div.mb-3
+        label(for="clasificacion", class="form-label") Clasificación
+        input(type="text" name="clasificacion" value=agenda.clasificacion class="form-control")
 
-        div
-            label(for="estado") Estado
-            input(type="text" name="estado" value=agenda.estado)
+      div.mb-3
+        label(for="max_sobreturnos", class="form-label") Max Sobreturnos
+        input(type="number" name="max_sobreturnos" value=agenda.max_sobreturnos class="form-control")
 
-        div
-            label(for="clasificacion") Clasificación
-            input(type="text" name="clasificacion" value=agenda.clasificacion)
+      div.mb-3
+        label(for="duracion_turno", class="form-label") Duración Turno
+        input(type="number" name="duracion_turno" value=agenda.duracion_turno class="form-control")
 
-        div
-            label(for="max_sobreturnos") Max Sobreturnos
-            input(type="number" name="max_sobreturnos" value=agenda.max_sobreturnos)
+      div
+        button(type="submit" class="btn btn-primary") Guardar Cambios
 
-        div
-            label(for="duracion_turno") Duración Turno
-            input(type="number" name="duracion_turno" value=agenda.duracion_turno)
 
-        div
-            button(type="submit") Guardar Cambios

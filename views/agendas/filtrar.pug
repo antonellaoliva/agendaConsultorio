@@ -1,26 +1,31 @@
 extends ../layout.pug
 
 block content
-  h1 Filtrar Agendas
+  h1.text-center Filtrar Agendas
+  .container.d-flex.justify-content-center.align-items-center(style="min-height: 100vh;")
+    form(action="/agendas/filtrar", method="GET" class="w-50")
+     
+      div.mb-3
+        label(for="especialidad", class="form-label") Especialidad
+        select(name="especialidad" class="form-select")
+          option(value="") Selecciona Especialidad
+          each especialidad in especialidades
+            option(value=especialidad.id) #{especialidad.nombre}
 
-  form(action="/agendas/filtrar", method="GET")
-    //- // Selección de especialidad
-    select(name="especialidad")
-      option(value="") Selecciona Especialidad
-      each especialidad in especialidades
-        option(value=especialidad.id) #{especialidad.nombre}
+      
+      div.mb-3
+        label(for="profesional", class="form-label") Profesional
+        select(name="profesional" class="form-select")
+          option(value="") Selecciona Profesional
+          each profesional in profesionales
+            option(value=profesional.id) #{profesional.nombre} #{profesional.apellido}
 
-    //- // Selección de profesional
-    select(name="profesional")
-      option(value="") Selecciona Profesional
-      each profesional in profesionales
-        option(value=profesional.id) #{profesional.nombre} #{profesional.apellido}
+      div.mb-3
+        button(type="submit" class="btn btn-primary") Filtrar
 
-    button(type="submit") Filtrar
-
-  //- // Mostrar resultados de la agenda si están disponibles
+ 
   if agendas && agendas.length
-    table
+    table.table.table-bordered.table-striped.mt-4
       thead
         tr
           th Profesional
@@ -44,39 +49,4 @@ block content
     p No se encontraron agendas.
 
 
-//- extends ../layout.pug
 
-//- block content
-//-   h1 Filtrar Agendas
-
-//-   form(action="/agendas/filtrar", method="GET")
-//-     // Selección de especialidad
-//-     select(name="especialidad")
-//-       option(value="") Selecciona Especialidad
-//-       each especialidad in especialidades
-//-         option(value=especialidad.id) #{especialidad.nombre}
-
-//-     // Selección de profesional
-//-     select(name="profesional")
-//-       option(value="") Selecciona Profesional
-//-       each profesional in profesionales
-//-         option(value=profesional.id) #{profesional.nombre} #{profesional.apellido}
-
-//-     button(type="submit") Filtrar
-
-//-   // Mostrar resultados de la agenda si están disponibles
-//-   if agendas && agendas.length
-//-     table
-//-       thead
-//-         tr
-//-           th Profesional
-//-           th Especialidad
-//-           th Clasificación
-//-       tbody
-//-         each agenda in agendas
-//-           tr
-//-             td #{agenda.profesional_nombre} #{agenda.profesional_apellido}
-//-             td #{agenda.especialidad_nombre}
-//-             td #{agenda.clasificacion}
-//-   else
-//-     p No se encontraron agendas.

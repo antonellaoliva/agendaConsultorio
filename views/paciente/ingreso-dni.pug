@@ -1,8 +1,36 @@
-extends ../layout.pug 
+extends ../layout.pug
 
 block content
-  h1 Agendar turno
-  form(action="/pedir-turno" method="POST")
-    label(for="dni") Ingrese su DNI:
-    input(type="text" name="dni" id="dni" required)
-    button(type="submit") Buscar
+  .container.mt-5
+    h1.text-center.mb-5 Agendar Turno
+
+    .row
+      .col-md-6
+        .card.shadow-sm.border-success
+          .card-header.bg-success.text-white
+            h3 DNI del paciente
+          .card-body
+            form(id="buscarPacienteForm")
+              .mb-3
+                label(for="dni", class="form-label") DNI:
+                input(type="text" name="dni" id="dni" required class="form-control")
+              
+              .text-center.mt-4
+                button(type="submit" class="btn btn-success") Buscar
+
+      .col-md-6
+        .card.shadow-sm.bg-light#datosPacienteContainer(hidden)
+          .card-header.bg-success.text-white
+            h3 Datos del Paciente
+          .card-body
+            dl.row#datosPaciente
+            .text-center.mt-4
+              a.btn.btn-success(href='/turnos/seleccion-especialidad' id="continuarBtn" hidden) Continuar
+
+  
+block scripts 
+    script(src="/js/datosPaciente.js") 
+
+
+
+

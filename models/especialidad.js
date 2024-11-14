@@ -15,68 +15,30 @@ const Especialidad = {
         return especialidades;
     },
 
-    asignarEspecialidades: async (profesionalId, especialidades) => {
-        if (!Array.isArray(especialidades)) {
-            throw new Error('especialidades debe ser un array');
-        }
+    asignarEspecialidades: async (profesional_id, especialidades, matriculas) => {
     
-        // Obtén las especialidades actuales
-        const [filas] = await db.query(
-            'SELECT especialidad_id FROM profesional_especialidad WHERE profesional_id = ?',
-            [profesionalId]
-        );
-        const idsActuales = filas.map(e => e.especialidad_id);
-    
-        // Determina las especialidades a agregar y las que se podrían eliminar si no tienen dependencias
-        const especialidadesAAgregar = especialidades.filter(id => !idsActuales.includes(id));
-        const especialidadesAEliminar = idsActuales.filter(id => !especialidades.includes(id));
-    
-        // Agrega las nuevas especialidades
-        for (const especialidadId of especialidadesAAgregar) {
-            await db.query(
-                'INSERT INTO profesional_especialidad (profesional_id, especialidad_id) VALUES (?, ?)',
-                [profesionalId, especialidadId]
+        const queries = especialidades.map((especialidad, index) => {
+            const matricula = matriculas[index];
+            return db.query(
+                'INSERT INTO profesional_especialidad (profesional_id, especialidad_id, matricula) VALUES (?, ?, ?)',
+                [profesional_id, especialidad, matricula]
             );
-        }
+        });
     
-        // Intenta eliminar las especialidades no deseadas solo si no tienen dependencias
-        for (const especialidadId of especialidadesAEliminar) {
-            try {
-                await db.query(
-                    'DELETE FROM profesional_especialidad WHERE profesional_id = ? AND especialidad_id = ?',
-                    [profesionalId, especialidadId]
-                );
-            } catch (error) {
-                // Ignorar error de restricción de clave externa si ocurre
-                if (error.code !== 'ER_ROW_IS_REFERENCED_2') {
-                    throw error;
-                }
-                console.log(`No se pudo eliminar la especialidad ${especialidadId} porque está en uso en otra tabla.`);
-            }
-        }
+        await Promise.all(queries);
     },
-    
-    // asignarEspecialidades: async (profesionalId, especialidades) => {
-    //     // Elimina las especialidades actuales del médico
-    //     await db.query('DELETE FROM profesional_especialidad WHERE profesional_id = ?', [profesionalId]);
-        
-    //     // Asigna nuevas especialidades
-    //     for (const especialidadId of especialidades) {
-    //         await db.query(
-    //             'INSERT INTO profesional_especialidad (profesional_id, especialidad_id) VALUES (?, ?)',
-    //             [profesionalId, especialidadId]
-    //         );
-    //     }
-    // },
 
-    obtenerEspecialidadesPorMedico: async (profesionalId) => {
+    
+    obtenerEspecialidadesYMatriculasPorMedico: async (profesionalId) => {
         const [especialidades] = await db.query(
-            'SELECT especialidad_id FROM profesional_especialidad WHERE profesional_id = ?',
+            `SELECT pe.especialidad_id, e.nombre, pe.matricula
+             FROM profesional_especialidad AS pe
+             JOIN especialidad AS e ON pe.especialidad_id = e.id
+             WHERE pe.profesional_id = ?`,
             [profesionalId]
         );
-        return especialidades.map(e => e.especialidad_id);
+        return especialidades;
     }
-
 };
-
+    
 module.exports = Especialidad;

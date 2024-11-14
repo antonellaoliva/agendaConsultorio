@@ -45,9 +45,9 @@ function cargarProfesionales() {
         return response.json();
       })
       .then(data => {
-        console.log(data); // Inspeccionar datos recibidos
+        console.log(data); 
         const profesionalSelect = document.getElementById('profesional');
-        profesionalSelect.innerHTML = ''; // Limpiar opciones anteriores
+        profesionalSelect.innerHTML = ''; 
         const optionDefault = document.createElement('option');
         optionDefault.value = '';
         optionDefault.textContent = 'Seleccionar';
@@ -62,14 +62,14 @@ function cargarProfesionales() {
             option.textContent = `${profesional.nombre} ${profesional.apellido}`;
             profesionalSelect.appendChild(option);
           });
-          profesionalSelect.disabled = false; // Habilitar select de profesionales
+          profesionalSelect.disabled = false; 
         } else {
           console.error('Datos no válidos:', data);
         }
       })
       .catch(error => console.error('Error al cargar profesionales:', error));
   } else {
-    document.getElementById('profesional').innerHTML = ''; // Limpiar opciones si no hay especialidad o sucursal
-    document.getElementById('profesional').disabled = true; // Deshabilitar select de profesionales
+    document.getElementById('profesional').innerHTML = ''; 
+    document.getElementById('profesional').disabled = true; 
   }
 }

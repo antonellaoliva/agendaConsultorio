@@ -28,17 +28,18 @@ const pacienteController = {
   pedirTurno: async (req, res) => {
     const { dni } = req.body;
     try {
-      const results = await Paciente.findByDNI(dni);
+      const results = await Paciente.findByDNI(dni); 
       if (results.length > 0) {
-        res.render('paciente/datos-paciente', { paciente: results[0] });
+        res.json({ success: true, paciente: results[0] }); 
       } else {
-        res.render('paciente/no-encontrado');
+        res.json({ success: false, message: "Paciente no encontrado" }); 
       }
     } catch (error) {
       console.error('Error en la consulta de DNI:', error);
-      res.status(500).send('Error en la consulta de paciente');
+      res.status(500).json({ success: false, message: 'Error en la consulta de paciente' }); // En caso de error, envía un mensaje de error
     }
   },
+  
 
   registro: (req, res) => {
     res.render('paciente/registro');
@@ -50,7 +51,7 @@ const pacienteController = {
 
     try {
       await Paciente.create({ nombre, apellido, dni, obra_social, datos_contacto, documento_path });
-      res.redirect('/ingreso-dni');
+      res.redirect('/pacientes/registro');
     } catch (error) {
       console.error('Error al registrar paciente:', error);
       res.status(500).send('Error al registrar el paciente');
@@ -85,7 +86,7 @@ const pacienteController = {
       }
 
       await Paciente.update(id, { nombre, apellido, dni, obra_social, datos_contacto, documento_path });
-      res.redirect('/ingreso-dni');
+      res.redirect('paciente/actualizar-paciente', { paciente });
     } catch (error) {
       console.error('Error al actualizar paciente:', error);
       res.status(500).send('Error al actualizar los datos del paciente');

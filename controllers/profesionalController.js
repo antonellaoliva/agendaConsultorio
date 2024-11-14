@@ -15,18 +15,29 @@ formularioNuevoMedico: async (req, res) => {
 
 crearMedico: async (req, res) => {
     try {
-        const { nombre, apellido, especialidades } = req.body;
+        const { nombre, apellido, especialidades, matriculas } = req.body;
 
-        // Verifica si especialidades es un array; si no, lo convierte en uno
-        const especialidadesArray = Array.isArray(especialidades) ? especialidades : [especialidades];
+        console.log("Especialidades recibidas:", especialidades);
+        console.log("Matrículas recibidas:", matriculas);
 
-        // Crea el nuevo profesional
+         const especialidadesFiltradas = [];
+         const matriculasFiltradas = [];
+ 
+         especialidades.forEach((especialidad, index) => {
+             if (especialidad && matriculas[index]) {
+                 especialidadesFiltradas.push(especialidad);
+                 matriculasFiltradas.push(matriculas[index]);
+             }
+         });
+
+         if (especialidadesFiltradas.length === 0 || matriculasFiltradas.length === 0) {
+            throw new Error("No hay especialidades y matrículas válidas para asociar al médico.");
+        }
+
         const profesionalId = await Profesional.crear({ nombre, apellido });
 
-        // Asigna las especialidades al profesional
-        await Especialidad.asignarEspecialidades(profesionalId, especialidadesArray);
+        await Especialidad.asignarEspecialidades(profesionalId, especialidadesFiltradas, matriculasFiltradas);
 
-        // Redirecciona a la lista de profesionales
         res.redirect('/profesionales');
     } catch (error) {
         console.error("Error al crear el médico:", error);
@@ -34,67 +45,15 @@ crearMedico: async (req, res) => {
     }
 },
 
-// crearMedico: async (req, res) => {
-//     const { nombre, apellido, especialidades } = req.body;
-//     const profesionalId = await Profesional.crear({ nombre, apellido });
-//     await Especialidad.asignarEspecialidades(profesionalId, especialidades);
-//     res.redirect('/profesionales');
-// },
-
-formularioEditarMedico: async (req, res) => {
-    try {
-        const profesionalId = req.params.id;
-
-        // Obtiene la información del profesional
-        const profesional = await Profesional.buscarPorId(profesionalId);
-
-        // Obtiene las especialidades actuales del profesional
-        const especialidadesActuales = await Especialidad.obtenerEspecialidadesPorMedico(profesionalId);
-        profesional.especialidades = especialidadesActuales; // Array de IDs de especialidades actuales
-
-        // Obtiene todas las especialidades disponibles
-        const especialidades = await Especialidad.listarTodas(); // Usamos listarTodas() para obtener todas las especialidades
-
-        // Renderiza la vista de edición
-        res.render('profesionales/editar', { profesional, especialidades });
-    } catch (error) {
-        console.error('Error al cargar el formulario de edición:', error);
-        res.status(500).send('Error interno del servidor');
-    }
-},
-
-// formularioEditarMedico: async (req, res) => {
-//     const profesionalId = req.params.id;
-//     const profesional = await Profesional.buscarPorId(profesionalId);
-//     const especialidades = await Especialidad.listarTodas();
-//     const especialidadesAsignadas = await Especialidad.obtenerEspecialidadesPorMedico(profesionalId);
-//     res.render('profesionales/editar', { profesional, especialidades, especialidadesAsignadas });
-// },
-
-inactivarMedico: async (req, res) => {
-    const profesionalId = req.params.id;
-    await Profesional.inactivar(profesionalId);
-    res.redirect('/profesionales');
-},
-
 actualizarMedico: async (req, res) => {
     const profesionalId = req.params.id;
-    const { nombre, apellido, estado } = req.body;
-    let especialidades = req.body.especialidades; // Cambiamos `const` a `let`
+    const { nombre, apellido, estado, especialidades, matriculas } = req.body;
 
     try {
-        // Convierte `especialidades` a un array si es un solo valor
-        if (typeof especialidades === 'string') {
-            especialidades = [especialidades]; // Convierte un valor único en un array
-        }
+        await Profesional.actualizarDatosBasicos(profesionalId, { nombre, apellido, estado });
 
-        // Actualiza la información del profesional
-        await Profesional.actualizar(profesionalId, { nombre, apellido, estado });
+        await Profesional.actualizarEspecialidadesYMatriculas(profesionalId, especialidades, matriculas);
 
-        // Actualiza las especialidades del profesional
-        await Especialidad.asignarEspecialidades(profesionalId, especialidades);
-
-        // res.redirect(`/profesionales/${profesionalId}/editar`);
         res.redirect('/profesionales');
     } catch (error) {
         console.error('Error al actualizar el médico:', error);
@@ -103,17 +62,36 @@ actualizarMedico: async (req, res) => {
 },
 
 
-// actualizarMedico: async (req, res) => {
-//     const profesionalId = req.params.id;
-//     const { nombre, apellido, estado, especialidades } = req.body;
-//     await Profesional.actualizar(profesionalId, { nombre, apellido, estado });
-//     await Especialidad.asignarEspecialidades(profesionalId, especialidades);
-//     res.redirect('/profesionales');
-// },
+formularioEditarMedico: async (req, res) => {
+    try {
+        const profesionalId = req.params.id;
+
+        const profesional = await Profesional.buscarPorId(profesionalId);
+
+        const especialidadesActuales = await Especialidad.obtenerEspecialidadesYMatriculasPorMedico(profesionalId);
+        profesional.especialidades = especialidadesActuales.map(e => ({
+            id: e.especialidad_id,
+            nombre: e.nombre,
+            matricula: e.matricula,
+        }));
+
+        const especialidades = await Especialidad.listarTodas(); 
+        
+        res.render('profesionales/editar', { profesional, especialidades });
+    } catch (error) {
+        console.error('Error al cargar el formulario de edición:', error);
+        res.status(500).send('Error interno del servidor');
+    }
+},
 
 
+inactivarMedico: async (req, res) => {
+    const profesionalId = req.params.id;
+    await Profesional.inactivar(profesionalId);
+    res.redirect('/profesionales');
+},
 
-// Controlador para obtener profesionales según especialidad y sucursal
+
 getProfesionales: async (req, res) => {
   const { especialidadId, sucursalId } = req.params;
 
@@ -140,3 +118,8 @@ getProfesionales: async (req, res) => {
 };
 
 module.exports = ProfesionalController;
+
+
+
+
+

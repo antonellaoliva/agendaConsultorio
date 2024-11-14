@@ -40,7 +40,7 @@ const TurnoController = {
 
             console.log('Criterios:', criterios);
             const horarios = await turno.mostrarHorariosDisponibles(criterios);
-            //if (!Array.isArray(horarios)) {
+            
               if (!Array.isArray(horarios) || horarios.length === 0) {
                 return res.status(404).json({ error: 'No se encontraron horarios' });
             }
@@ -53,7 +53,7 @@ const TurnoController = {
         }
     },
 
-    
+   
     getTurnosDisponibles: async (req, res) => {
         const { especialidadId, sucursalId, profesionalId } = req.params;
       
@@ -63,7 +63,6 @@ const TurnoController = {
       
         try {
           const turnos = await turno.getPorEspecialidadSucursalYProfesional(especialidadId, sucursalId, profesionalId);
-          // const turnos = await turno.getPorEspecialidadSucursalYProfesional(especialidadId, sucursalId, profesionalId, fechaSeleccionada);
       
           if (turnos.length === 0) {
             return res.status(404).json({ message: 'No se encontraron turnos disponibles' });

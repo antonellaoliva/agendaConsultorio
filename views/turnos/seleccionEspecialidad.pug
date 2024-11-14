@@ -1,89 +1,80 @@
 extends ../layout.pug
 
 block content
-  div.container.mt-5
+  .container.mt-5
     h1.text-center.mb-4 Datos del Turno
-
-   
-    div.row
-      
-      div.col-md-6
-        div(class="card shadow-sm mb-4")
-          div(class="card-body")
+    .row
+      .col-md-6
+        .card.shadow-sm.mb-4
+          .card-body
             form(action="/turnos/seleccionar", method="POST", id="formData") 
-              div.row.mb-3
-                div.col-12
-                  div.form-group
+              .row.mb-3
+                .col-12
+                  .form-group
                     label(for="especialidad") Servicio
                     select(name="especialidad", id="especialidad", class="form-control", required onchange="cargarProfesionales()")
                       option(value="", disabled selected) Seleccionar
                       each especialidad in especialidades
                         option(value=especialidad.id)= especialidad.nombre
-              div.row.mb-3
-                div.col-12
-                  div.form-group
+              .row.mb-3
+                .col-12
+                  .form-group
                     label(for="sucursal") Sucursal
-                    select(name="sucursal", id="sucursal", class="form-control", required, disabled onchange="cargarProfesionales()")
+                    select(name="sucursal", id="sucursal", class="form-control", required disabled onchange="cargarProfesionales()")
                       option(value="", disabled selected) Todas
                       each sucursal in sucursales
                         option(value=sucursal.id)= sucursal.nombre
-              div.row.mb-3
-                div.col-12
-                  div.form-group
+              .row.mb-3
+                .col-12
+                  .form-group
                     label(for="profesional") Prestador
-                    select(name="profesional", id="profesional", class="form-control", required, disabled)
+                    select(name="profesional", id="profesional", class="form-control", required disabled)
                       option(value="", disabled selected) Todos
                       each profesional in profesionales
                         option(value=profesional.id)= profesional.nombre
-              div.row.mb-3
-                div.col-12
-                  div.form-group
+              .row.mb-3
+                .col-12
+                  .form-group
                     label(for="fechaConsulta") Fecha de Consulta
-                    input(type="date", name="fechaConsulta", class="form-control", required, id="fechaConsulta")
-              button(type="button", id="verHorarios", class="btn btn-primary mt-3") Ver horarios
+                    input(type="date", name="fechaConsulta", class="form-control", required id="fechaConsulta")
+              button(type="button", id="verHorarios", class="btn btn-success mt-3", onclick="obtenerTurnosDisponibles()") Ver horarios
 
-      //- Columna Derecha para Mostrar Turnos Disponibles y Confirmación
-      div.col-md-6
-        div(id="horariosDisponibles", class="mt-4", style="display: none;")
-          div(class="card shadow-sm")
-            div(class="card-header bg-primary text-white text-center")
-              h5.m-0 Seleccione el Horario
-            div(class="card-body")
-              ul(id="listaHorarios", class="list-group list-group-flush")
+    
+      .col-md-6
+        #resultadosTurnos.mt-4(style="display: none;") 
+          .card
+            .card-header.bg-success.text-white.text-center
+              h5.m-0 Turnos Disponibles
+            .card-body
+              ul#listaTurnos.list-group.list-group-flush
+            
 
-        button(type="button", id="siguiente", class="btn btn-success mt-3", onclick="obtenerTurnosDisponibles()", style="display: none;") Siguiente
-
-        div(id="resultadosTurnos", class="mt-4")
-
-        div(id="confirmacionContainer", class="mt-4", style="display: none;")
-          div(class="card shadow-sm")
-            div(class="card-header bg-success text-white text-center")
+        #confirmacionContainer.mt-4(style="display: none;")
+          .card.shadow-sm
+            .card-header.bg-success.text-white.text-center
               h2.m-0 Confirmar Turno
-            div(class="card-body")
-              p(id="especialidadSeleccionada", class="mb-2") 
+            .card-body
+              p#especialidadSeleccionada.mb-2 
                 strong Especialidad: 
-              p(id="profesionalSeleccionado", class="mb-2") 
+              p#profesionalSeleccionado.mb-2 
                 strong Profesional: 
-              p(id="fechaSeleccionada", class="mb-2") 
+              p#fechaSeleccionada.mb-2 
                 strong Fecha: 
-              p(id="horaSeleccionada", class="mb-2") 
+              p#horaSeleccionada.mb-2 
                 strong Hora: 
 
-              form(action="/turnos/confirmar/{turnoId}" method="POST")
-
-                //- Campos ocultos para enviar al backend
+              form(action="/turnos/confirmar/{turnoId}", method="POST")
                 input(type="hidden", id="turnoId", name="turno_id")
                 input(type="hidden", id="agendaId", name="agenda_id")
                 input(type="hidden", id="profesionalId", name="profesional_id")
                 input(type="hidden", id="fecha", name="fecha")
                 input(type="hidden", id="hora", name="hora")
                 input(type="hidden", id="motivoConsulta", name="motivo_consulta") 
-
                 button(type="button", class="btn btn-success mt-3", onclick="confirmarTurno()") Confirmar Turno
-
-      
 
 block scripts
   script(src="/js/seleccionar.js") 
-  script(src="/js/disponibles.js") 
   script(src="/js/mostrarTurno.js")
+
+
+

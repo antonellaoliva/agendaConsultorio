@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
       fetch(`/turnos/disponibles?especialidad=${especialidad}&sucursal=${sucursal}&profesional=${profesional}&fecha=${fecha}&_=${new Date().getTime()}`)
         .then(response => response.json())
         .then(data => {
-          listaHorarios.innerHTML = ''; // Limpiar la lista existente
+          listaHorarios.innerHTML = ''; 
   
           if (data.horarios && data.horarios.length > 0) {
 
@@ -20,13 +20,12 @@ document.addEventListener('DOMContentLoaded', function() {
               li.className = 'list-group-item d-flex justify-content-between align-items-center';
               li.textContent = `${horario.dia_semana}: ${horario.hora_inicio} - ${horario.hora_fin}`;
               
-              // Crear un checkbox para seleccionar el horario
               const checkbox = document.createElement('input');
               checkbox.type = 'checkbox';
               checkbox.className = 'form-check-input';
-              checkbox.value = `${horario.id}`; // Guarda el ID del horario
+              checkbox.value = `${horario.id}`; 
               checkbox.onchange = function() {
-                // Mostrar el botón "Siguiente" si hay un horario seleccionado
+            
                 botonSiguiente.style.display = Array.from(listaHorarios.querySelectorAll('input[type="checkbox"]')).some(cb => cb.checked) ? 'inline-block' : 'none';
               };
   

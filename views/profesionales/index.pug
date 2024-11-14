@@ -4,9 +4,9 @@ block content
    h1.text-center.mt-4 Lista de Médicos
 
    .container.mt-5
-      a.btn.btn-primary(href="/profesionales/nuevo") Agregar Médico
+      a.btn.btn-success(href="/profesionales/nuevo" ) Agregar Médico
 
-      // Tabla para mostrar la lista de médicos
+
       table.table.table-striped.table-hover.mt-4
          thead
             tr
@@ -25,11 +25,11 @@ block content
                      else
                         span.badge.bg-danger Inactivo
                   td
-                     // Botón de Editar
+                     
                      a.btn.btn-sm.btn-warning(href=`/profesionales/${profesional.id}/editar` title="Editar") 
                         i.bi.bi-pencil 
                         |  Editar
-                     // Formulario para inactivar
+                     
                      form(action=`/profesionales/${profesional.id}/inactivar`, method="post", style="display:inline;")
                         button.btn.btn-sm.btn-outline-danger(type="submit" title="Inactivar")
                            i.bi.bi-x-circle 

@@ -71,7 +71,6 @@ const Turno = {
     }
   },
 
-  // Función para obtener turnos disponibles por profesional
   getPorEspecialidadSucursalYProfesional: async (especialidadId, sucursalId, profesionalId) => {
     const query = `
       SELECT * FROM turno
@@ -85,25 +84,11 @@ const Turno = {
       ) 
       AND estado_turno = 'libre'
       
-      AND fecha >= CURRENT_DATE;  
-    `;
+      AND fecha >= CURRENT_DATE;  `;
+
     const [turnos] = await db.execute(query, [especialidadId, profesionalId, sucursalId]);
     return turnos;
   },
-
-  // registrarTurnoConPaciente: async (turnoId, pacienteId, nuevoEstado) => {
-  //   try {
-  //     const [result] = await db.query(
-  //       'UPDATE turno SET estado_turno = ?, paciente_id = ? WHERE id = ?',
-  //       [nuevoEstado, pacienteId, turnoId]
-  //     );
-  //     return result.affectedRows > 0;
-  //   } catch (error) {
-  //     console.error("Error al registrar el turno con paciente:", error);
-  //     throw error;
-  //   }
-  // }
-
 
   };
 

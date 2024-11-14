@@ -1,20 +1,35 @@
 extends ../layout.pug
 
 block content
-  h1 Datos del Paciente
+  h1.text-center Datos del Paciente
 
-  form(action='/actualizar-paciente' method='POST' enctype='multipart/form-data')
-    input(type='hidden' name='id' value=paciente.id)
-    label Nombre:
-    input(type='text' name='nombre' value=paciente.nombre)
-    label Apellido:
-    input(type='text' name='apellido' value=paciente.apellido)
-    label DNI:
-    input(type='text' name='dni' value=paciente.dni readonly)
-    label Obra Social:
-    input(type='text' name='obra_social' value=paciente.obra_social)
-    label Datos de Contacto:
-    input(type='text' name='datos_contacto' value=paciente.datos_contacto)
-    label Documento (opcional):
-    input(type='file' name='documento')
-    button(type='submit') Actualizar
+  .container.d-flex.justify-content-center.align-items-center(style="min-height: 100vh;")
+    form(action='/pacientes/actualizar-paciente' method='POST' enctype='multipart/form-data' class="w-50")
+      input(type='hidden' name='id' value=paciente.id)
+      
+      div.mb-3
+        label(for="nombre", class="form-label") Nombre:
+        input(type='text' name='nombre' value=paciente.nombre class="form-control")
+      
+      div.mb-3
+        label(for="apellido", class="form-label") Apellido:
+        input(type='text' name='apellido' value=paciente.apellido class="form-control")
+      
+      div.mb-3
+        label(for="dni", class="form-label") DNI:
+        input(type='text' name='dni' value=paciente.dni readonly class="form-control")
+      
+      div.mb-3
+        label(for="obra_social", class="form-label") Obra Social:
+        input(type='text' name='obra_social' value=paciente.obra_social class="form-control")
+      
+      div.mb-3
+        label(for="datos_contacto", class="form-label") Datos de Contacto:
+        input(type='text' name='datos_contacto' value=paciente.datos_contacto class="form-control")
+      
+      div.mb-3
+        label(for="documento", class="form-label") Documento (opcional):
+        input(type='file' name='documento' class="form-control")
+      
+      div
+        button(type='submit' class="btn btn-primary") Actualizar
